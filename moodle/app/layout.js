@@ -6,6 +6,7 @@ import {
   Open_Sans,
 } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
 
 export const metadata = {
   title: "Moodle",
@@ -25,11 +26,14 @@ export default function RootLayout({ children }) {
           <h1
             className={`${fugaz.className} textGradient text-base sm:text-lg`}
           >
-            Moodle
+            <Link href="/">Moodl</Link>
           </h1>
+          <div className="flex items-center justify-between">Placeholder</div>
         </header>
         {children}
-        <footer className="p-4 sm:p-8 ">Footer</footer>
+        <footer className="p-4 sm:p-8 grid place-items-center">
+          <p className={`${fugaz.className} text-indigo-600`}>Created with </p>
+        </footer>
       </body>
     </html>
   );
