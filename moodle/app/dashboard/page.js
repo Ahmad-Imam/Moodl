@@ -9,7 +9,9 @@ export const metadata = {
 };
 
 export default function DashboardPage() {
-  const isAuth = true;
-
-  return <Main>{isAuth ? <Dashboard /> : <Login />}</Main>;
+  return (
+    <Main>
+      <Dashboard />
+    </Main>
+  );
 }

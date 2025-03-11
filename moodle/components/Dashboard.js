@@ -1,6 +1,12 @@
+"use client";
 import { Fugaz_One } from "next/font/google";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Calender from "./Calender";
+import { useAuth } from "@/hooks/useAuth";
+import { setDoc } from "firebase/firestore";
+import { db } from "@/firebase";
+import Login from "./Login";
+import Loading from "./Loading";
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] });
 export default function Dashboard() {
@@ -18,6 +24,81 @@ export default function Dashboard() {
     angry: "😠",
     depressed: "😢",
   };
+
+  const { currentUser, userDataObj, setUserDataObj, loading } = useAuth();
+  const [data, setData] = useState({});
+
+  function countValues() {
+    let total_number_of_days = 0;
+    let sum_moods = 0;
+    for (let year in data) {
+      for (let month in data[year]) {
+        for (let day in data[year][month]) {
+          let days_mood = data[year][month][day];
+          total_number_of_days++;
+          sum_moods += days_mood;
+        }
+      }
+    }
+    return {
+      num_days: total_number_of_days,
+      average_mood: sum_moods / total_number_of_days,
+    };
+  }
+
+  async function handleSetMood(mood) {
+    const now = new Date();
+    let day = now.getDate();
+    let month = now.getMonth();
+    let year = now.getFullYear();
+    try {
+      const newData = { ...userDataObj };
+
+      if (!newData[year]) {
+        newData[year] = {};
+      }
+      if (!newData[year][month]) {
+        newData[year][month] = {};
+      }
+
+      newData[year][month][day] = mood;
+
+      setData(newData);
+      setUserDataObj(newData);
+      const docRef = doc(db, "users", currentUser.uid);
+
+      const res = await setDoc(
+        docRef,
+        {
+          [year]: {
+            [month]: {
+              [day]: mood,
+            },
+          },
+        },
+        { merge: true }
+      );
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  useEffect(() => {
+    if (!currentUser || !userDataObj) {
+      return;
+    }
+    setData(userDataObj);
+
+    console.log(userDataObj);
+  }, [currentUser, userDataObj]);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (!currentUser) {
+    return <Login />;
+  }
 
   return (
     <div className="flex flex-col flex-1 gap-8 sm:gap-12 md:gap-16">
@@ -44,10 +125,11 @@ export default function Dashboard() {
         How do you <span className={`textGradient`}>feel</span> today?
       </h4>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {Object.keys(moods).map((mood, index) => {
+        {Object.keys(moods).map((mood, moodIndex) => {
           return (
-            <div
-              key={index}
+            <button
+              onClick={() => handleSetMood(moodIndex + 1)}
+              key={moodIndex}
               className="flex flex-col items-center justify-center gap-4 p-4 border-1 border-solid border-indigo-300 rounded-3xl bg-indigo-50 hover:bg-indigo-300 purpleShadow duration-200"
             >
               <p
@@ -60,11 +142,11 @@ export default function Dashboard() {
               >
                 {mood}
               </h3>
-            </div>
+            </button>
           );
         })}
       </div>
-      <Calender />
+      <Calender data={data} handleSetMood={handleSetMood} />
     </div>
   );
 }
