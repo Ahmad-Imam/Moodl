@@ -2,11 +2,12 @@
 import { Fugaz_One } from "next/font/google";
 import React, { useEffect, useState } from "react";
 import Calender from "./Calender";
-import { useAuth } from "@/hooks/useAuth";
-import { setDoc } from "firebase/firestore";
+
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import Login from "./Login";
 import Loading from "./Loading";
+import { useAuth } from "@/hooks/useAuth";
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] });
 export default function Dashboard() {
@@ -25,7 +26,8 @@ export default function Dashboard() {
     depressed: "😢",
   };
 
-  const { currentUser, userDataObj, setUserDataObj, loading } = useAuth();
+  const { currentUser, userDataObj, setUserDataObj, loading, getAllUsers } =
+    useAuth();
   const [data, setData] = useState({});
 
   function countValues() {
@@ -66,7 +68,8 @@ export default function Dashboard() {
       setData(newData);
       setUserDataObj(newData);
       const docRef = doc(db, "users", currentUser.uid);
-
+      console.log("docRef");
+      console.log(docRef);
       const res = await setDoc(
         docRef,
         {
@@ -99,9 +102,11 @@ export default function Dashboard() {
   if (!currentUser) {
     return <Login />;
   }
-
+  console.log("currentUser");
+  console.log(currentUser);
   return (
     <div className="flex flex-col flex-1 gap-8 sm:gap-12 md:gap-16">
+      <button onClick={getAllUsers}>Testingssssssssssssss</button>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
         {Object.keys(statuses).map((status, index) => {
           return (
