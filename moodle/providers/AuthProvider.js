@@ -18,9 +18,25 @@ export default function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   // AUTH HANDLERS
-  function signup(email, password) {
+  async function signup(formData) {
+    const { email, password, username } = formData;
     try {
-      return createUserWithEmailAndPassword(auth, email, password);
+      return createUserWithEmailAndPassword(auth, email, password).then(
+        async (userCredential) => {
+          const user = userCredential.user;
+          const docRef = doc(db, "users", user.uid);
+          console.log("User in signup");
+          console.log(user);
+          console.log(docRef);
+          await setDoc(docRef, {
+            username,
+            email,
+            uid: user.uid,
+            mood: {},
+            streak: 0,
+          });
+        }
+      );
     } catch (error) {
       console.error("Error in signup:", error.code, error.message);
       throw error;
@@ -40,18 +56,17 @@ export default function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       try {
-        // Set the user to our local context state
         console.log("Checking User");
         console.log(user);
         setLoading(true);
         setCurrentUser(user);
         if (!user) {
           console.log("No User Found");
-
+          setUserDataObj(null);
+          setCurrentUser(null);
           return;
         }
 
-        // if user exists, fetch data from firestore database
         console.log("Fetching User Data");
         const docRef = doc(db, "users", user.uid);
 
@@ -68,7 +83,6 @@ export default function AuthProvider({ children }) {
           firebaseData = docSnap.data();
           console.log(firebaseData);
         } else {
-          // if no data exists, create a new document
           console.log("No User Data Found");
           await setDoc(docRef, {});
         }

@@ -3,13 +3,14 @@ import React from "react";
 import Button from "./Button";
 import Calender from "./Calender";
 import Link from "next/link";
+import HomeAction from "./HomeAction";
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function Hero() {
   return (
     <div className="py-4 sm:py-14 md:py-12 flex flex-col gap-4 md:gap-6 sm:gap-8">
       <h1 className="text-5xl sm:text-6xl md:text-7xl text-center">
-        <span className={`${fugaz.className} textGradient`}>Hero</span> tracks
+        <span className={`${fugaz.className} textGradient`}>Moodl</span> tracks
         your
         <span className={`${fugaz.className} textGradient`}> daily </span> mood
         and helps you understand your emotions better over time.
@@ -19,12 +20,7 @@ export default function Hero() {
         <span className="font-semibold"> everyday over the year</span>
       </p>
 
-      <div className="grid grid-cols-2 gap-4 w-fit mx-auto">
-        <Link href={"/dashboard"}>
-          <Button text="Sign Up" />
-        </Link>
-        <Button text="Login" dark={true} />
-      </div>
+      <HomeAction />
       <Calender demo />
     </div>
   );

@@ -14,6 +14,11 @@ export const metadata = {
   description: "Mood tracker application",
 };
 
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import Logout from "@/components/Logout";
+config.autoAddCss = false;
+
 const open = Open_Sans({ subsets: ["latin"] });
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] });
 
@@ -30,12 +35,14 @@ export default function RootLayout({ children }) {
             >
               <Link href="/">Moodl</Link>
             </h1>
-            <div className="flex items-center justify-between">Placeholder</div>
+            <div className="flex items-center justify-between">
+              <Logout />
+            </div>
           </header>
           {children}
           <footer className="p-4 sm:p-8 grid place-items-center">
             <p className={`${fugaz.className} text-indigo-600`}>
-              Created with{" "}
+              Created with Next.js
             </p>
           </footer>
         </body>

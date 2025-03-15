@@ -10,12 +10,150 @@ import Loading from "./Loading";
 import { useAuth } from "@/hooks/useAuth";
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] });
+
 export default function Dashboard() {
+  const { currentUser, userDataObj, setUserDataObj, loading } = useAuth();
+  const [moodData, setMoodData] = useState({});
+  const now = new Date();
+  console.log("dash re rednered");
+  // console.log(userDataObj);
+  // console.log(moodData);
+
+  function getDailyStreak() {
+    let streak = 0;
+    const date = new Date(now);
+
+    // If there's no entry for today, move to yesterday.
+    if (
+      !(
+        moodData[date.getFullYear()] &&
+        moodData[date.getFullYear()][date.getMonth()] &&
+        moodData[date.getFullYear()][date.getMonth()][date.getDate()] != null
+      )
+    ) {
+      date.setDate(date.getDate() - 1);
+    }
+
+    // Count consecutive days with a mood entry
+    while (true) {
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      const day = date.getDate();
+
+      if (
+        moodData[year] &&
+        moodData[year][month] &&
+        moodData[year][month][day] != null
+      ) {
+        streak++;
+        date.setDate(date.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+    return streak;
+  }
+
+  function getCurrentMonthlyAverageMood() {
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    let totalDays = 0;
+    let sumMoods = 0;
+
+    if (moodData[year] && moodData[year][month]) {
+      for (let day in moodData[year][month]) {
+        sumMoods += moodData[year][month][day];
+        totalDays++;
+      }
+    }
+    const monthly_average =
+      totalDays > 0 ? (sumMoods / totalDays).toFixed(2) : 0;
+    return { monthly_average };
+  }
+
+  function countValues() {
+    let total_number_of_days = 0;
+    let sum_moods = 0;
+    let average_mood = 0;
+    // console.log("data");
+    // console.log(moodData);
+    // console.log(userDataObj);
+    for (let year in moodData) {
+      for (let month in moodData[year]) {
+        for (let day in moodData[year][month]) {
+          let days_mood = moodData[year][month][day];
+          total_number_of_days++;
+          sum_moods += days_mood;
+        }
+      }
+    }
+
+    average_mood = sum_moods / total_number_of_days;
+    const current_streak = getDailyStreak();
+
+    return {
+      num_days: total_number_of_days,
+      average_mood: average_mood.toFixed(2),
+      current_streak,
+    };
+  }
+  //monthly average mood
+  //highest streak
   const statuses = {
-    num_days: 14,
-    time_remaining: "14:14:26",
-    date: new Date().toDateString(),
+    ...countValues(),
+    ...getCurrentMonthlyAverageMood(),
+    time_remaining: `${23 - now.getHours()}H ${60 - now.getMinutes()}M`,
   };
+
+  async function handleSetMood(newMood) {
+    const day = now.getDate();
+    const month = now.getMonth();
+    const year = now.getFullYear();
+
+    try {
+      const newData = { ...userDataObj.mood };
+      // const newData = JSON.parse(JSON.stringify(userDataObj || {}));
+
+      if (!newData?.[year]) {
+        newData[year] = {};
+      }
+      if (!newData?.[year]?.[month]) {
+        newData[year][month] = {};
+      }
+
+      newData[year][month][day] = newMood;
+      console.log("newData");
+
+      const dailyStreak = getDailyStreak();
+      console.log(dailyStreak);
+      console.log(userDataObj.streak);
+
+      const newStreak =
+        dailyStreak > userDataObj.streak ? dailyStreak : userDataObj.streak;
+
+      console.log("newStreak");
+      setMoodData(newData);
+      setUserDataObj({ ...userDataObj, mood: newData, streak: newStreak });
+
+      const docRef = doc(db, "users", currentUser.uid);
+      await setDoc(
+        docRef,
+        {
+          mood: {
+            [year]: {
+              [month]: {
+                [day]: newMood,
+              },
+            },
+          },
+          streak: newStreak,
+        },
+        { merge: true }
+      );
+    } catch (err) {
+      console.log("Failed to set data: ", err.message);
+    }
+  }
 
   const moods = {
     normal: "🙂",
@@ -26,73 +164,11 @@ export default function Dashboard() {
     depressed: "😢",
   };
 
-  const { currentUser, userDataObj, setUserDataObj, loading, getAllUsers } =
-    useAuth();
-  const [data, setData] = useState({});
-
-  function countValues() {
-    let total_number_of_days = 0;
-    let sum_moods = 0;
-    for (let year in data) {
-      for (let month in data[year]) {
-        for (let day in data[year][month]) {
-          let days_mood = data[year][month][day];
-          total_number_of_days++;
-          sum_moods += days_mood;
-        }
-      }
-    }
-    return {
-      num_days: total_number_of_days,
-      average_mood: sum_moods / total_number_of_days,
-    };
-  }
-
-  async function handleSetMood(mood) {
-    const now = new Date();
-    let day = now.getDate();
-    let month = now.getMonth();
-    let year = now.getFullYear();
-    try {
-      const newData = { ...userDataObj };
-
-      if (!newData[year]) {
-        newData[year] = {};
-      }
-      if (!newData[year][month]) {
-        newData[year][month] = {};
-      }
-
-      newData[year][month][day] = mood;
-
-      setData(newData);
-      setUserDataObj(newData);
-      const docRef = doc(db, "users", currentUser.uid);
-      console.log("docRef");
-      console.log(docRef);
-      const res = await setDoc(
-        docRef,
-        {
-          [year]: {
-            [month]: {
-              [day]: mood,
-            },
-          },
-        },
-        { merge: true }
-      );
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
-
   useEffect(() => {
     if (!currentUser || !userDataObj) {
       return;
     }
-    setData(userDataObj);
-
-    console.log(userDataObj);
+    setMoodData(userDataObj?.mood);
   }, [currentUser, userDataObj]);
 
   if (loading) {
@@ -102,11 +178,11 @@ export default function Dashboard() {
   if (!currentUser) {
     return <Login />;
   }
-  console.log("currentUser");
-  console.log(currentUser);
+
+  // console.log("currentUser");
+  // console.log(currentUser);
   return (
     <div className="flex flex-col flex-1 gap-8 sm:gap-12 md:gap-16">
-      <button onClick={getAllUsers}>Testingssssssssssssss</button>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
         {Object.keys(statuses).map((status, index) => {
           return (
@@ -119,6 +195,7 @@ export default function Dashboard() {
               </h3>
               <p className={`${fugaz.className} text-indigo-700`}>
                 {statuses[status]}
+                {status === "num_days" ? " 🔥" : ""}
               </p>
             </div>
           );
@@ -151,7 +228,7 @@ export default function Dashboard() {
           );
         })}
       </div>
-      <Calender data={data} handleSetMood={handleSetMood} />
+      <Calender completeData={moodData} handleSetMood={handleSetMood} />
     </div>
   );
 }
