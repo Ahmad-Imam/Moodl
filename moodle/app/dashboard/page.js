@@ -1,4 +1,4 @@
-import Dashboard from "@/components/Dashboard";
+import Dashboard from "@/app/dashboard/_components/Dashboard";
 import Login from "@/components/Login";
 import Main from "@/components/Main";
 import React from "react";

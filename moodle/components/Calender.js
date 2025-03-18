@@ -1,4 +1,9 @@
 "use client";
+import {
+  dayNames,
+  monthNames,
+  moodTypes,
+} from "@/app/stats/_components/mood-data";
 import { baseRating, gradients } from "@/utils";
 import {
   faCircleChevronLeft,
@@ -8,40 +13,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Fugaz_One } from "next/font/google";
 import React, { useState } from "react";
 
-const months = {
-  January: "Jan",
-  February: "Feb",
-  March: "Mar",
-  April: "Apr",
-  May: "May",
-  June: "Jun",
-  July: "Jul",
-  August: "Aug",
-  September: "Sept",
-  October: "Oct",
-  November: "Nov",
-  December: "Dec",
-};
-const monthsArr = Object.keys(months);
-const now = new Date();
-const dayList = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function Calendar(props) {
-  const { demo, completeData, handleSetMood } = props;
+  const { demo, completeData } = props;
   const now = new Date();
+  const monthsArr = Object.keys(monthNames);
   const currMonth = now.getMonth();
   const [selectedMonth, setSelectMonth] = useState(
-    Object.keys(months)[currMonth]
+    Object.keys(monthNames)[currMonth]
   );
   const [selectedYear, setSelectedYear] = useState(now.getFullYear());
 
@@ -59,25 +39,14 @@ export default function Calendar(props) {
       setSelectMonth(monthsArr[numericMonth + val]);
     }
   }
-
   const monthNow = new Date(
     selectedYear,
-    Object.keys(months).indexOf(selectedMonth),
+    Object.keys(monthNames).indexOf(selectedMonth),
     1
   );
   const firstDayOfMonth = monthNow.getDay();
-  // const daysInMonth = new Date(
-  //   selectedYear,
-  //   Object.keys(selectedMonth).indexOf(selectedMonth) + 1,
-  //   0
-  // ).getDate();
   const daysInMonth = new Date(selectedYear, numericMonth + 1, 0).getDate();
-
   const daysToDisplay = firstDayOfMonth + daysInMonth;
-
-  console.log("daysToDisplay");
-  console.log(daysToDisplay);
-
   const numRows = Math.floor(daysToDisplay / 7) + (daysToDisplay % 7 ? 1 : 0);
 
   return (
@@ -115,8 +84,8 @@ export default function Calendar(props) {
       <div className="flex flex-col overflow-hidden gap-1 py-4 sm:py-6 md:py-10">
         {[...Array(numRows).keys()].map((row, rowIndex) => {
           return (
-            <div key={rowIndex} className="grid grid-cols-7 gap-1">
-              {dayList.map((dayOfWeek, dayOfWeekIndex) => {
+            <div key={rowIndex} className="grid grid-cols-7 gap-1 ">
+              {dayNames.map((dayOfWeek, dayOfWeekIndex) => {
                 let dayIndex =
                   rowIndex * 7 + dayOfWeekIndex - (firstDayOfMonth - 1);
 
@@ -136,7 +105,7 @@ export default function Calendar(props) {
                 let color = demo
                   ? gradients.indigo[baseRating[dayIndex]]
                   : dayIndex in data
-                  ? gradients.indigo[data[dayIndex]]
+                  ? moodTypes[data[dayIndex] - 1]?.color
                   : "white";
 
                 return (

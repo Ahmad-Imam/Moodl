@@ -24,21 +24,13 @@ export default function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
     setAuthenticating(true);
-    console.log("before try");
+
     try {
       if (isRegister) {
-        console.log("in register");
-        console.log(formData.email);
         await signup(formData);
-        // await createUser(formData);
       } else {
-        console.log("in login");
-        console.log(formData);
         await login(formData.email, formData.password);
       }
-      //set the form data
-
-      console.log("after try");
     } catch (err) {
       console.log(err.message);
     } finally {
@@ -58,7 +50,6 @@ export default function Login() {
       >
         {isRegister && (
           <input
-            // onChange={(e) => setEmail(e.target.value)}
             className="w-full max-w-[400px] mx-auto px-4 py-2 sm:py-3 border-2 border-solid border-indigo-400 rounded-full outline-none focus:border-indigo-700 hover:border-indigo-400 duration-300"
             placeholder="Username"
             name="username"
@@ -69,7 +60,6 @@ export default function Login() {
           />
         )}
         <input
-          // onChange={(e) => setEmail(e.target.value)}
           className="w-full max-w-[400px] mx-auto px-4 py-2 sm:py-3 border-2 border-solid border-indigo-400 rounded-full outline-none focus:border-indigo-700 hover:border-indigo-400 duration-300"
           placeholder="Email"
           type="email"
@@ -84,7 +74,6 @@ export default function Login() {
           placeholder="Password"
           type="password"
           name="password"
-          // onChange={(e) => setPassword(e.target.value)}
           value={formData.password}
           onChange={(e) =>
             setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -101,7 +90,6 @@ export default function Login() {
         </div>
       </form>
       <p className="text-center">
-        {/* Don&#39;t have an account?{" "} */}
         <button
           onClick={() => setIsRegister(!isRegister)}
           className="text-indigo-600 underline cursor-pointer"

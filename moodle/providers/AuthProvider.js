@@ -25,9 +25,6 @@ export default function AuthProvider({ children }) {
         async (userCredential) => {
           const user = userCredential.user;
           const docRef = doc(db, "users", user.uid);
-          console.log("User in signup");
-          console.log(user);
-          console.log(docRef);
           await setDoc(docRef, {
             username,
             email,
@@ -56,34 +53,25 @@ export default function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       try {
-        console.log("Checking User");
-        console.log(user);
         setLoading(true);
         setCurrentUser(user);
         if (!user) {
-          console.log("No User Found");
           setUserDataObj(null);
           setCurrentUser(null);
           return;
         }
 
-        console.log("Fetching User Data");
         const docRef = doc(db, "users", user.uid);
 
         if (!docRef) {
-          console.log("No Document Reference Found");
           return;
         }
         const docSnap = await getDoc(docRef);
-        console.log("docRef in prov");
-        console.log(docSnap);
+
         let firebaseData = {};
         if (docSnap.exists()) {
-          console.log("Found User Data");
           firebaseData = docSnap.data();
-          console.log(firebaseData);
         } else {
-          console.log("No User Data Found");
           await setDoc(docRef, {});
         }
         setUserDataObj(firebaseData);
