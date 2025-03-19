@@ -19,6 +19,7 @@ import MoodDistributionRadarChart from "./charts/mood-distrubtion-radar-chart";
 import MoodComparisonChart from "./charts/mood-comparison-chart";
 import { useAuth } from "@/hooks/useAuth";
 import Login from "@/components/Login";
+import MoodInsights from "./mood-insights";
 
 export default function MoodStatistics() {
   const { userDataObj, currentUser } = useAuth();
@@ -189,54 +190,7 @@ export default function MoodStatistics() {
                 </CardContent>
               </Card>
 
-              <Card className="chartCustom purpleShadow">
-                <CardHeader>
-                  <CardTitle>Mood Insights</CardTitle>
-                  <CardDescription>
-                    Key insights from your mood data
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="flex flex-col gap-3">
-                    <li className="flex items-start gap-2">
-                      <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white mt-0.5">
-                        ↑
-                      </div>
-                      <div>
-                        <p className="font-medium">
-                          Your mood improves on weekends
-                        </p>
-                        <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                          Saturday and Sunday show consistently better moods
-                        </p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-white mt-0.5">
-                        !
-                      </div>
-                      <div>
-                        <p className="font-medium">Mid-week mood dip</p>
-                        <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                          Wednesdays show the lowest average mood
-                        </p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white mt-0.5">
-                        i
-                      </div>
-                      <div>
-                        <p className="font-medium">Mood stability</p>
-                        <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                          Your mood has been more stable this month compared to
-                          last
-                        </p>
-                      </div>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
+              <MoodInsights moodData={moodData} />
             </div>
           </div>
         </TabsContent>

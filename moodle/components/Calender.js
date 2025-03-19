@@ -82,6 +82,18 @@ export default function Calendar(props) {
         )}
       </div>
       <div className="flex flex-col overflow-hidden gap-1 py-4 sm:py-6 md:py-10">
+        <div className="grid grid-cols-7 gap-1">
+          {dayNames.map((day) => {
+            return (
+              <p
+                key={day}
+                className="text-xs sm:text-sm text-center text-indigo-400"
+              >
+                {day}
+              </p>
+            );
+          })}
+        </div>
         {[...Array(numRows).keys()].map((row, rowIndex) => {
           return (
             <div key={rowIndex} className="grid grid-cols-7 gap-1 ">
@@ -113,7 +125,9 @@ export default function Calendar(props) {
                     style={{ background: color }}
                     className={
                       "text-xs sm:text-sm border border-solid p-2 flex items-center gap-2 justify-between rounded-lg " +
-                      (isToday ? " border-indigo-400" : " border-indigo-100") +
+                      (isToday
+                        ? " border-stone-950 border-2"
+                        : " border-indigo-100") +
                       (color === "white" ? " text-indigo-400" : " text-white")
                     }
                     key={dayOfWeekIndex}
