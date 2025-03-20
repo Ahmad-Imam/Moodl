@@ -19,23 +19,6 @@ export const POST = async (request) => {
         description: "",
       },
     };
-
-    // const prompt = `I am giving you a moodData object. The structure is { year: { month: { day: moodValue } } }. The months are 0-indexed, meaning 0 is January and 11 is December.
-    //   The mood values are from 1 to 6 for cheerful, happy, normal, angry, sad, depressed, respectively.
-
-    //   Here is the moodData: ${JSON.stringify(moodData)}.
-
-    //   Analyze the moodData and provide an analysis, structuring your response as a JSON object that conforms to the following schema:
-
-    //   ${JSON.stringify(moodModel, null, 2)}
-
-    //   Analyze the moodData and provide an analysis, structuring your response as a JSON object that includes ALL the entries from the mood model (positive, negative, neutral, or info) that are relevant to the moodData.
-    //    the maximum character count for description is 100 characters.
-
-    //    Return ONLY the JSON object representing that single entry.
-    //    Do not add any additional text or explanations outside of the JSON object
-    //   .Do not include any additional text, backticks, or formatting. Just the JSON.`;
-
     const prompt = `I am giving you a moodData object. The structure is { year: { month: { day: moodValue } } }. The months are 0-indexed, meaning 0 is January and 11 is December.
       The mood values are from 1 to 6 for cheerful, happy, normal, angry, sad, depressed, respectively.
 

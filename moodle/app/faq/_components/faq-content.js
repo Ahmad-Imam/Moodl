@@ -91,7 +91,7 @@ export default function FaqContent() {
                   Select your mood from the options: Cheerful, Happy, Normal,
                   Angry, Sad, or Depressed
                 </li>
-                <li>Click &quot;Save&quot; to record your mood</li>
+                <li>&quot;Click&quot; to record your mood</li>
               </ol>
             </AccordionContent>
           </AccordionItem>
@@ -104,10 +104,7 @@ export default function FaqContent() {
               <p>Yes, you can edit or delete daily mood entry only</p>
               <ol className="list-decimal ml-5 mt-2 flex flex-col gap-2">
                 <li>Go to the dashboard calendar</li>
-                <li>
-                  To edit: Change the mood selection click on a new mood
-                  &quot;Update&quot;
-                </li>
+                <li>To edit: Change the mood selection click on a new mood</li>
               </ol>
               <p className="mt-2">
                 Note: Editing entries will affect your mood statistics.
