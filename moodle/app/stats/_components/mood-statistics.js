@@ -36,7 +36,9 @@ export default function MoodStatistics() {
 
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
 
-  const comparisonMonth = selectedMonth - 1 > 0 ? selectedMonth - 1 : 11;
+  const comparisonMonth = selectedMonth - 1 > -1 ? selectedMonth - 1 : 11;
+  console.log(selectedMonth);
+  console.log(comparisonMonth);
 
   if (!currentUser) {
     return <Login />;
@@ -47,7 +49,7 @@ export default function MoodStatistics() {
         <h2 className="text-2xl font-semibold">Mood Analysis</h2>
         <div className="flex gap-4">
           <button
-            className={`px-4 py-2 rounded-md ${
+            className={`px-4 py-2 rounded-md cursor-pointer ${
               selectedMonth === lastMonth && selectedYear === lastMonthYear
                 ? "bg-indigo-500 text-primary-foreground"
                 : "bg-indigo-100 text-secondary-foreground hover:bg-secondary/80"
@@ -60,7 +62,7 @@ export default function MoodStatistics() {
             Last Month
           </button>
           <button
-            className={`px-4 py-2 rounded-md ${
+            className={`px-4 py-2 rounded-md cursor-pointer ${
               selectedMonth === currentMonth && selectedYear === currentYear
                 ? "bg-indigo-500 text-primary-foreground"
                 : "bg-indigo-100 text-secondary-foreground hover:bg-secondary/80"
@@ -160,7 +162,7 @@ export default function MoodStatistics() {
                 <div>
                   <CardTitle>Month-to-Month Comparison</CardTitle>
                   <CardDescription>
-                    Compare mood patterns between different months
+                    Compare mood patterns between last two months
                   </CardDescription>
                 </div>
               </CardHeader>

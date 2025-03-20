@@ -15,16 +15,19 @@ export default function MoodInsights({ moodData }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
+  console.log(data);
 
   const colorMap = {
-    positive: "green",
-    negative: "amber",
-    info: "blue",
+    positive: "bg-green-500",
+    negative: "bg-amber-500",
+    info: "bg-blue-500",
+    default: "bg-gray-500",
   };
   const iconMap = {
     positive: "↑",
     negative: "!",
     info: "i",
+    default: "?",
   };
 
   async function generateInsights() {
@@ -69,12 +72,15 @@ export default function MoodInsights({ moodData }) {
         {data && (
           <ul className="flex flex-col gap-3">
             {Object.keys(data).map((key, index) => {
+              const color = colorMap[key] || colorMap.default; // Get color from map or use default
+              const icon = iconMap[key] || iconMap.default; // Get icon from map or use default
+
               return (
                 <li className="flex items-start gap-2" key={key}>
                   <div
-                    className={`w-5 h-5 rounded-full bg-${colorMap[key]}-500 flex items-center justify-center text-white mt-0.5`}
+                    className={`w-5 h-5 rounded-full ${color} flex items-center justify-center text-white mt-0.5`}
                   >
-                    <div>{iconMap[key]}</div>
+                    <div>{icon}</div>
                   </div>
                   <div>
                     <p className="font-medium">{data[key].header}</p>

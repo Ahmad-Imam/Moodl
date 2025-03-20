@@ -1,6 +1,11 @@
 import Main from "@/components/Main";
 import MoodStatistics from "./_components/mood-statistics";
 
+export const metadata = {
+  title: "Moodl . Statistics",
+  description: "Statistics page showing mood statistics using charts",
+};
+
 export default function StaticsPage() {
   return (
     <Main>

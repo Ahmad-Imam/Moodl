@@ -9,7 +9,7 @@ export default function Button(props) {
   return (
     <button
       onClick={handleClick}
-      className={`${color} rounded-full overflow-hidden border-2 border-solid border-indigo-600 hover:opacity-90 text-blue-300 ${width}`}
+      className={`${color} rounded-full overflow-hidden border-2 border-solid border-indigo-600 hover:opacity-90 text-blue-300 ${width} cursor-pointer`}
       {...rest}
     >
       <p

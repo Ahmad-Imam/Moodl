@@ -57,7 +57,7 @@ export default function Calendar(props) {
             onClick={() => {
               handleIncrementMonth(-1);
             }}
-            className="mr-auto text-indigo-400 text-lg sm:text-xl duration-200 hover:opacity-60 pr-5"
+            className="mr-auto text-indigo-400 text-lg sm:text-xl duration-200 hover:opacity-60 pr-5 cursor-pointer"
           >
             <FontAwesomeIcon icon={faCircleChevronLeft} className="fa-fw" />
           </button>
@@ -75,7 +75,7 @@ export default function Calendar(props) {
             onClick={() => {
               handleIncrementMonth(+1);
             }}
-            className="ml-auto text-indigo-400 text-lg sm:text-xl duration-200 hover:opacity-60 pl-5"
+            className="ml-auto text-indigo-400 text-lg sm:text-xl duration-200 hover:opacity-60 pl-5 cursor-pointer"
           >
             <FontAwesomeIcon icon={faCircleChevronRight} className="fa-fw" />
           </button>

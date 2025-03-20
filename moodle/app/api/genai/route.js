@@ -45,6 +45,7 @@ export const POST = async (request) => {
       ${JSON.stringify(moodModel, null, 2)}
     
       the header should contain maximum of 4 words and the description should contain maximum of 100 characters.
+      do not send any blank header or description for any of the insights. send something meaningful.
       Analyze the moodData and identify ALL relevant insights from the mood model. Return a JSON object where each key is a category from the mood model (positive, negative, or info) and the value is the corresponding insight.
        Return ONLY the JSON object.
        Do not add any additional text or explanations outside of the JSON object

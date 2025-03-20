@@ -4,7 +4,7 @@ import Main from "@/components/Main";
 import React from "react";
 
 export const metadata = {
-  title: "Moodle . Dashboard",
+  title: "Moodl . Dashboard",
   description: "Dashboard page",
 };
 

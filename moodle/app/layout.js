@@ -1,18 +1,15 @@
 import { Fugaz_One, Open_Sans } from "next/font/google";
 import "./globals.css";
-
 import AuthProvider from "@/providers/AuthProvider";
-
-export const metadata = {
-  title: "Moodle",
-  description: "Mood tracker application",
-};
-
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import Logout from "@/components/Logout";
 import Header from "@/components/Header";
 config.autoAddCss = false;
+
+export const metadata = {
+  title: "Moodl",
+  description: "Mood tracker application",
+};
 
 const open = Open_Sans({ subsets: ["latin"] });
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] });

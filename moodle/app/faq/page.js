@@ -2,7 +2,7 @@ import Main from "@/components/Main";
 import FaqContent from "./_components/faq-content";
 
 export const metadata = {
-  title: "FAQ - Mood Tracker",
+  title: "Moodl . FAQ",
   description: "Frequently asked questions about the Mood Tracker application",
 };
 

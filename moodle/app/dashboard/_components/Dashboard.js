@@ -18,6 +18,10 @@ export default function Dashboard() {
   const now = new Date();
 
   function getDailyStreak() {
+    if (moodData == null || moodData == undefined || moodData == {}) {
+      return { current_streak: 0 };
+    }
+
     let streak = 0;
     const date = new Date(now);
 
@@ -52,6 +56,10 @@ export default function Dashboard() {
   }
 
   function getCurrentMonthlyAverageMood() {
+    if (moodData == null || moodData == undefined || moodData == {}) {
+      return { monthly_average_mood: 0 };
+    }
+
     const year = now.getFullYear();
     const month = now.getMonth();
     let totalDays = 0;
@@ -63,24 +71,33 @@ export default function Dashboard() {
         totalDays++;
       }
     }
-    const monthly_average =
-      totalDays > 0 ? (sumMoods / totalDays).toFixed(2) : 0;
+    const monthly_average = totalDays > 0 ? sumMoods / totalDays : 3;
 
-    const monthly_average_mood = moodTypes[Math.round(monthly_average)].label;
+    const monthly_average_mood =
+      moodTypes[Math.round(monthly_average) - 1].label;
 
     return { monthly_average_mood };
   }
 
   function getTotalAverageMood() {
+    if (moodData == null || moodData == undefined || moodData == {}) {
+      return {
+        total_days: 0,
+        average_mood: 0,
+        current_streak: 0,
+        highest_streak: 0,
+      };
+    }
+
     const allMoodValues = Object.values(moodData).flatMap((yearData) =>
       Object.values(yearData).flatMap((monthData) => Object.values(monthData))
     );
     const total_number_of_days = allMoodValues.length;
     const sum_moods = allMoodValues.reduce((sum, mood) => sum + mood, 0);
     let average_mood =
-      total_number_of_days > 0 ? sum_moods / total_number_of_days : 0;
+      total_number_of_days > 0 ? sum_moods / total_number_of_days : 3;
 
-    average_mood = moodTypes[Math.round(average_mood)].label;
+    average_mood = moodTypes[Math.round(average_mood) - 1].label;
 
     const { current_streak } = getDailyStreak();
 
@@ -145,6 +162,7 @@ export default function Dashboard() {
       console.log("Failed to set data: ", err.message);
     }
   }
+
   useEffect(() => {
     if (!currentUser || !userDataObj) {
       return;
@@ -191,7 +209,7 @@ export default function Dashboard() {
             <button
               onClick={() => handleSetMood(mood.value)}
               key={moodIndex}
-              className="flex flex-col items-center justify-center gap-4 p-4 border-1 border-solid border-indigo-300 rounded-3xl bg-indigo-50 hover:bg-indigo-300 purpleShadow duration-200"
+              className="flex flex-col items-center justify-center gap-4 p-4 border-1 border-solid border-indigo-300 rounded-3xl bg-indigo-50 hover:bg-indigo-300 purpleShadow duration-200 cursor-pointer"
             >
               <p
                 className={`${fugaz.className} text-3xl md:text-4xl lg:text-5xl`}

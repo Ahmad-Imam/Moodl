@@ -63,65 +63,22 @@ export const dayNames = [
   "Saturday",
 ];
 
-function getRandomMoodValue() {
-  return Math.floor(Math.random() * 6) + 1;
-}
-
-function getDaysInMonth(year, month) {
-  return new Date(year, month, 0).getDate();
-}
-
-export function generateMoodData() {
-  const data = {};
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth() + 1;
-
-  for (let monthOffset = 0; monthOffset < 12; monthOffset++) {
-    let year = currentYear;
-    let month = currentMonth - monthOffset;
-
-    if (month <= 0) {
-      month += 12;
-      year -= 1;
-    }
-
-    if (!data[year]) {
-      data[year] = {};
-    }
-
-    if (!data[year][month]) {
-      data[year][month] = {};
-    }
-
-    const daysInMonth = getDaysInMonth(year, month);
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      if (Math.random() < 0.8) {
-        data[year][month][day] = getRandomMoodValue();
-      }
-    }
-  }
-
-  return data;
-}
-
 export function getAvailableYears(data) {
+  if (!data) return [];
   return Object.keys(data)
     .map((year) => Number.parseInt(year))
     .sort();
 }
 
 export function getAvailableMonths(data, year) {
-  if (!data) return [];
-  if (!data[year]) return [];
+  if (!data || !data[year]) return [];
   return Object.keys(data[year])
     .map((month) => Number.parseInt(month))
     .sort();
 }
 
 export function getMoodDataForMonth(data, year, month) {
-  if (!data[year] || !data[year][month]) return [];
+  if (!data || !data[year] || !data[year][month]) return [];
 
   return Object.entries(data[year][month])
     .map(([day, value]) => ({
@@ -132,7 +89,7 @@ export function getMoodDataForMonth(data, year, month) {
 }
 
 export function getMoodDistributionForMonth(data, year, month) {
-  if (!data[year] || !data[year][month]) return [];
+  if (!data || !data[year] || !data[year][month]) return [];
 
   const distribution = moodTypes.map((type) => ({
     mood: type.label,
@@ -148,7 +105,7 @@ export function getMoodDistributionForMonth(data, year, month) {
 }
 
 export function getMoodByDayOfWeek(data, year, month) {
-  if (!data[year] || !data[year][month]) return [];
+  if (!data || !data[year] || !data[year][month]) return [];
 
   const dayOfWeekData = {
     Sunday: [],
@@ -177,7 +134,7 @@ export function getMoodByDayOfWeek(data, year, month) {
 }
 
 export function getMoodByMonth(data, year) {
-  if (!data[year]) return [];
+  if (!data || !data[year]) return [];
 
   return Object.keys(monthNames).map((name, index) => {
     const monthNumber = index;
@@ -197,6 +154,7 @@ export function getMoodByMonth(data, year) {
 }
 
 export function getMoodDistributionForRadar(data, year, month) {
+  if (!data || !data[year] || !data[year][month]) return [];
   const distribution = getMoodDistributionForMonth(data, year, month);
 
   return moodTypes.map((type) => ({
@@ -206,6 +164,8 @@ export function getMoodDistributionForRadar(data, year, month) {
 }
 
 export function getComparisonData(data, year, month1, month2) {
+  if (!data || !data[year] || !data[year][month1] || !data[year][month2])
+    return [];
   const categories = [
     { name: "Positive Moods", filter: (v) => v <= 2 },
     { name: "Neutral Moods", filter: (v) => v === 3 },

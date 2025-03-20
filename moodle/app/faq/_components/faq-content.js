@@ -12,7 +12,7 @@ import { CalendarDays, LineChart, Lock, User } from "lucide-react";
 export default function FaqContent() {
   return (
     <Tabs defaultValue="account" className="w-full ">
-      <TabsList className="grid w-full grid-cols-4 mb-8 bg-indigo-50">
+      <TabsList className="grid w-full grid-cols-3 mb-8 bg-indigo-50">
         <TabsTrigger value="account" className="flex gap-2 items-center">
           <User className="h-4 w-4" />
           <span className="hidden sm:inline">Account</span>
@@ -24,10 +24,6 @@ export default function FaqContent() {
         <TabsTrigger value="features" className="flex gap-2 items-center">
           <LineChart className="h-4 w-4" />
           <span className="hidden sm:inline">Features</span>
-        </TabsTrigger>
-        <TabsTrigger value="privacy" className="flex gap-2 items-center">
-          <Lock className="h-4 w-4" />
-          <span className="hidden sm:inline">Privacy</span>
         </TabsTrigger>
       </TabsList>
 
@@ -196,7 +192,7 @@ export default function FaqContent() {
         </Accordion>
       </TabsContent>
 
-      <TabsContent value="features" className="mt-0 max-w-xl">
+      <TabsContent value="features" className="mt-0">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
             <AccordionTrigger>
@@ -286,129 +282,30 @@ export default function FaqContent() {
               </p>
             </AccordionContent>
           </AccordionItem>
-        </Accordion>
-      </TabsContent>
-
-      <TabsContent value="privacy" className="mt-0">
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="item-1">
-            <AccordionTrigger>
-              How is my mood data stored and protected?
-            </AccordionTrigger>
-            <AccordionContent>
-              <p>
-                We take the security and privacy of your mood data very
-                seriously:
-              </p>
-              <ul className="list-disc ml-5 mt-2 flex flex-col gap-2">
-                <li>All data is encrypted both in transit and at rest</li>
-                <li>
-                  Your mood data is stored in secure databases with regular
-                  backups
-                </li>
-                <li>
-                  We use industry-standard security practices to protect your
-                  information
-                </li>
-                <li>
-                  Your data is never shared with third parties without your
-                  explicit consent
-                </li>
-                <li>
-                  You can delete your data at any time from your account
-                  settings
-                </li>
-              </ul>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-2">
-            <AccordionTrigger>Who can see my mood data?</AccordionTrigger>
-            <AccordionContent>
-              <p>
-                By default, your mood data is private and only visible to you.
-                You have complete control over who can access your information:
-              </p>
-              <ul className="list-disc ml-5 mt-2 flex flex-col gap-2">
-                <li>
-                  Only you can see your detailed mood entries and statistics
-                </li>
-                <li>
-                  You can optionally share specific statistics or reports with
-                  others via a secure link
-                </li>
-                <li>
-                  If you choose to participate in research, your data will be
-                  anonymized
-                </li>
-                <li>
-                  Our staff cannot access your individual mood data except in
-                  limited circumstances for technical support (with your
-                  permission)
-                </li>
-              </ul>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-3">
-            <AccordionTrigger>
-              Is my mood data used for research?
-            </AccordionTrigger>
-            <AccordionContent>
-              <p>
-                We only use your data for research if you explicitly opt in:
-              </p>
-              <ul className="list-disc ml-5 mt-2 flex flex-col gap-2">
-                <li>
-                  During registration, you can choose whether to participate in
-                  anonymous research
-                </li>
-                <li>
-                  If you opt in, your data will be anonymized (all personally
-                  identifiable information removed)
-                </li>
-                <li>
-                  Research helps us improve the app and better understand mood
-                  patterns
-                </li>
-                <li>You can opt out at any time in your privacy settings</li>
-              </ul>
-              <p className="mt-2">
-                We never sell your data to third parties, even in anonymized
-                form.
-              </p>
-            </AccordionContent>
-          </AccordionItem>
 
           <AccordionItem value="item-4">
             <AccordionTrigger>
-              What data does the app collect besides my mood entries?
+              What are mood insights and how are they generated?
             </AccordionTrigger>
             <AccordionContent>
-              <p>Besides your mood entries, we collect:</p>
-              <ul className="list-disc ml-5 mt-2 flex flex-col gap-2">
-                <li>
-                  <strong>Account information</strong> - Email address and
-                  encrypted password
-                </li>
-                <li>
-                  <strong>Usage data</strong> - How often you use the app and
-                  which features you use
-                </li>
-                <li>
-                  <strong>Device information</strong> - Browser type, operating
-                  system, and screen size (to optimize your experience)
-                </li>
-              </ul>
-              <p className="mt-2">We do not collect:</p>
-              <ul className="list-disc ml-5 mt-2 flex flex-col gap-2">
-                <li>Your precise location</li>
-                <li>Your contacts or address book</li>
-                <li>Information from other apps on your device</li>
-              </ul>
-              <p className="mt-2">
-                You can view our complete privacy policy for more details.
+              <p>
+                Mood insights provide personalized analysis of your mood
+                patterns. It is generated by AI based on your mood data.
               </p>
+              <ul className="list-disc ml-5 mt-2 flex flex-col gap-2">
+                <li>
+                  <strong>Positive insights</strong> - Highlight positive trends
+                </li>
+                <li>
+                  <strong>Negative insights</strong> - Identify areas for
+                  improvement
+                </li>
+
+                <li>
+                  <strong>Additional Information</strong> - Provide context and
+                  suggestions for better mood management
+                </li>
+              </ul>
             </AccordionContent>
           </AccordionItem>
         </Accordion>

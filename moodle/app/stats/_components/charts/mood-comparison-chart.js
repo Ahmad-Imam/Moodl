@@ -46,8 +46,8 @@ export default function MoodComparisonChart({ data, year, month1, month2 }) {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="category" />
-        <YAxis />
-        <ChartTooltip content={<ChartTooltipContent />} />
+        {/* <YAxis /> */}
+        <ChartTooltip content={<ChartTooltipContent nameKey={"asd"} />} />
         <Legend />
         <Bar
           dataKey="month1Value"
