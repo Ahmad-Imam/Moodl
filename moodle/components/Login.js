@@ -4,13 +4,9 @@ import React, { useState } from "react";
 import Button from "./Button";
 import { useAuth } from "@/hooks/useAuth";
 
-import { useRouter } from "next/navigation";
-
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] });
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [isRegister, setIsRegister] = useState(true);
   const { signup, login } = useAuth();
   const [authenticating, setAuthenticating] = useState(false);
@@ -19,11 +15,27 @@ export default function Login() {
     password: "",
     username: "",
   });
-  const router = useRouter();
+
+  const [error, setError] = useState(null);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setAuthenticating(true);
+    if (
+      !formData.email ||
+      !formData.password ||
+      (isRegister && !formData.username)
+    ) {
+      alert("Please fill in all fields");
+      setAuthenticating(false);
+      return;
+    }
+
+    if (isRegister && formData.password.length < 6) {
+      alert("Password must be at least 6 characters long");
+      setAuthenticating(false);
+      return;
+    }
 
     try {
       if (isRegister) {
@@ -32,6 +44,7 @@ export default function Login() {
         await login(formData.email, formData.password);
       }
     } catch (err) {
+      setError(err.message);
       console.log(err.message);
     } finally {
       setAuthenticating(false);
@@ -40,6 +53,7 @@ export default function Login() {
 
   return (
     <div className="flex flex-col flex-1 justify-center items-center gap-4">
+      {error && <p className="text-red-500">{error}</p>}
       <h3 className={`${fugaz.className} text-4xl sm:text-5xl md:text-6xl`}>
         {isRegister ? "Register" : "Login"}
       </h3>
@@ -54,6 +68,7 @@ export default function Login() {
             placeholder="Username"
             name="username"
             value={formData.username}
+            required
             onChange={(e) =>
               setFormData({ ...formData, [e.target.name]: e.target.value })
             }
@@ -65,6 +80,7 @@ export default function Login() {
           type="email"
           name="email"
           value={formData.email}
+          required
           onChange={(e) =>
             setFormData({ ...formData, [e.target.name]: e.target.value })
           }
@@ -75,6 +91,7 @@ export default function Login() {
           type="password"
           name="password"
           value={formData.password}
+          required
           onChange={(e) =>
             setFormData({ ...formData, [e.target.name]: e.target.value })
           }
