@@ -77,10 +77,12 @@ export default function MoodInsights({ moodData }) {
 
               return (
                 <li className="flex items-start gap-2" key={key}>
-                  <div
-                    className={`w-5 h-5 rounded-full ${color} flex items-center justify-center text-white mt-0.5`}
-                  >
-                    <div>{icon}</div>
+                  <div className={` text-white mt-0.5`}>
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center ${color}`}
+                    >
+                      {icon}
+                    </div>
                   </div>
                   <div>
                     <p className="font-medium">{data[key].header}</p>
